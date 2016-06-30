@@ -195,7 +195,7 @@
                                     
                                     <p>
                                         {{ Auth::user()->name }}
-                                        <small>Member since {{ Auth::user()->created_at }}</small>
+                                       <!-- <small>Member since {{ Auth::user()->created_at }}</small>-->
                                     </p>
                                 </li>
                                 <!-- Menu Body -->
@@ -365,7 +365,7 @@
                 
             </div>
             <!-- Default to the left -->
-            <strong>Copyright © 2016 <a href="#">PN2K </a> </strong> All rights reserved.
+            <strong>Copyright © 2016 <a href="http://reactive-solutions.xyz/" target="_blank">Reactive Solutions </a> </strong> All rights reserved.
             
         </footer>
 

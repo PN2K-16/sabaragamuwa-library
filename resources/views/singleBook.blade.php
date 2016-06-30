@@ -777,7 +777,7 @@ else {
                         <div class="form-group">
                             <label for="copydate" class="col-lg-2 control-label">Date</label>
                             <div class="col-lg-10">
-                                <input class="form-control" id="copydate" placeholder="    " type="text" value="<?php echo date(" Y-m-d ");  ?>">
+                                <input class="form-control" id="copydate" placeholder="    " type="date" value="<?php echo date(" Y-m-d ");  ?>">
                             </div>
 
 

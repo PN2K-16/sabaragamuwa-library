@@ -13,6 +13,7 @@ use DB;
 use Auth;
 use Hash;
 use Cache;
+use Illuminate\Support\MessageBag;
 
 class memberController extends Controller
 {
@@ -84,13 +85,22 @@ class memberController extends Controller
     
     
     public function Logins(Request $request){
-    
-    $member = Input::only('email','password');
         
-     if(Auth::attempt($member)){
+    $credentials = [
+      'email'     => Input::get('email'),
+      'password'  => Input::get('password')    
+    ];
+        
+    $errors = new MessageBag;    
+    
+   // $member = Input::only('email','password');
+        
+     if(Auth::attempt($credentials)){
         return Redirect::Intended('/searchBooks');
     }
-    return Redirect::to('Login');
+        
+     $errors = new MessageBag(['password' => ['Email and/or password invalid.']]);
+    return Redirect::back()->withErrors($errors)->withInput(Input::except('password'));
     
     
     

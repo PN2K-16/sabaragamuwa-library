@@ -100,7 +100,7 @@ kushal
       </div>
         <div class="col-lg-2  " align="right" >
             <div id="booksave" >
-        <button type="submit"    class="btn btn-primary btn-block " style="padding-right:0cm" >Register</button>
+        <button type="submit"    class="btn btn-primary btn-block " style="padding-right:0cm" >Done</button>
                 </div>
             
       </div>
