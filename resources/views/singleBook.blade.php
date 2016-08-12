@@ -671,7 +671,7 @@ else {
                   <strong> Duartion should be an integer!</strong>  
                      </div>
                    <div class="alert alert-dismissible alert-danger" id="lenderrorthree" hidden="true" align="center">
-                  <strong> Mobile Number does Not Exist!</strong>  
+                  <strong> Membership ID is invalid!</strong>  
                      </div>
                    
                    <input type="text" id="lendbookid"  hidden="true">
@@ -709,9 +709,9 @@ else {
                 <div class=" form form-horizontal">
                <fieldset>
                       <div class="form-group">
-                         <label for="reserved_client_id" class="col-lg-3 control-label">Mobile Number</label>
+                         <label for="reserved_client_id" class="col-lg-3 control-label">Membership ID</label>
                          <div class="col-lg-6">
-                        <input class="form-control" id="reserved_client_id" name="reserved_client_id" placeholder="Mobile Number " type="text" >
+                        <input class="form-control" id="reserved_client_id" name="reserved_client_id" placeholder="membership id" type="text" >
                         </div>
                    </div>
                    
@@ -729,7 +729,7 @@ else {
                   <strong> Duartion should be an integer!</strong>  
                      </div>
                    <div class="alert alert-dismissible alert-danger" id="reserveerrorthree" hidden="true" align="center">
-                  <strong> Mobile Number does Not Exist!</strong>  
+                  <strong> Membership ID is invalid!</strong>  
                      </div>
                    
                    <input type="text" id="reservebookid"  hidden="true">

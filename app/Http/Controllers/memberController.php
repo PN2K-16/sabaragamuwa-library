@@ -384,7 +384,7 @@ class memberController extends Controller
     $duration=$request->input('duration');
     $bookid=$request->input('bookid');
         
-    $cilent_id_raw = DB::table('members')->where('Mobile_Number','=', $mnumber)->first();
+    $cilent_id_raw = DB::table('members')->where('id','=', $mnumber)->first();
     $cilent_id = $cilent_id_raw->id;
     $bdate = date("Y-m-d");   
     $date=\Carbon\Carbon::now();
