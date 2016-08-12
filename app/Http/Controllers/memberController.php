@@ -25,6 +25,7 @@ class memberController extends Controller
        'name'             => 'required|max:20',                        // just a normal required validation
         'Last_Name'         => 'required|max:50',     // required and must be unique in the ducks table
         'type'             => 'required',
+        'position'             => 'required',
         'email'         => 'required|email|unique:users', 
         'password'         => 'required|',
         'confirm_password' => 'required|same:password',
@@ -49,13 +50,14 @@ class memberController extends Controller
         $name=Input::get('name');
         $lastname=Input::get('Last_Name');
         $typee=Input::get('type');
-        $email=Input::get('email'); 
+        $email=Input::get('email');
+        $position=Input::get('position'); 
         $password=Hash::make(Input::get('password'));
         $bdate = date("Y-m-d");     
         $username=$name.' '.$lastname;
         
   
-           $id=DB::table('users')->insert(array('name'=>$username,'email'=>$email,'type'=>$typee,'password'=>$password,'created_at'=>$bdate,'updated_at'=>$bdate));
+           $id=DB::table('users')->insert(array('name'=>$username,'email'=>$email,'position'=>$position,'type'=>$typee,'password'=>$password,'created_at'=>$bdate,'updated_at'=>$bdate));
            
            
     
@@ -327,7 +329,7 @@ class memberController extends Controller
     
         $mnumber=$request->input('mnumber');
         
-        $num = DB::table('members')->where('Mobile_Number','=', $mnumber)->count();
+        $num = DB::table('members')->where('id','=', $mnumber)->count();
         
         if($num == 1)
         {
@@ -349,13 +351,22 @@ class memberController extends Controller
     $duration=$request->input('duration');
     $bookid=$request->input('bookid');
         
-    $cilent_id_raw = DB::table('members')->where('Mobile_Number','=', $mnumber)->first();
+    $cilent_id_raw = DB::table('members')->where('id','=', $mnumber)->first();
     $cilent_id = $cilent_id_raw->id;
     $bdate = date("Y-m-d");   
     $date=\Carbon\Carbon::now();
     $due_date = $date->addDays($duration);
         
       DB::table('books')->where('id','=', $bookid)->update(array('status'=>"Not Available"));  
+        
+      $bookcopy = DB::table('books')->where('id','=', $bookid)->first();
+      $book_id = $bookcopy->book_name_id;
+        
+      $book = DB::table('bookdetails')->where('id','=',$book_id)->first();
+      $lendcount = $book->lend_count;
+      $addcount = 1;
+      $newlendcount = $lendcount+$addcount;
+      DB::table('bookdetails')->where('id','=',$book_id)->update(array('lend_count'=>$newlendcount));
         
      $idd=DB::table('borrow_log')->insert(array('book_id'=>$bookid,'client_id'=>$cilent_id,'borrowed_date'=>$bdate,'duration'=>$duration,'due_date'=>$due_date,'user_issued'=>$user));
         
@@ -401,6 +412,15 @@ class memberController extends Controller
     $due_date = $date->addDays($duration);
         
       DB::table('books')->where('id','=', $bookid)->update(array('status'=>"Not Available",'reserved'=>"No"));  
+          
+      $bookcopy = DB::table('books')->where('id','=', $bookid)->first();
+      $book_id = $bookcopy->book_name_id;
+        
+      $book = DB::table('bookdetails')->where('id','=',$book_id)->first();
+      $lendcount = $book->lend_count;
+      $addcount = 1;
+      $newlendcount = $lendcount+$addcount;
+      DB::table('bookdetails')->where('id','=',$book_id)->update(array('lend_count'=>$newlendcount));
         
      $idd=DB::table('borrow_log')->insert(array('book_id'=>$bookid,'client_id'=>$client_id,'borrowed_date'=>$bdate,'duration'=>$duration,'due_date'=>$due_date,'user_issued'=>$user));
           
@@ -456,10 +476,11 @@ class memberController extends Controller
 
 
     $user_name = DB::table('users')->where('id','=', $id)->first();
+    $upositions = DB::table('user_positions')->orderBy('id')->get();
   
 
     return view('singleUser')
-        ->with("user_name", $user_name);  
+        ->with("user_name", $user_name)->with("upositions",$upositions);  
         
         
     }
@@ -472,6 +493,7 @@ class memberController extends Controller
         $rules = array(
        'name'             => 'required|max:50',                        // just a normal required validation
         'type'             => 'required',
+        'position'          => 'required',
         'email'         => 'required|email|unique:users,email,'.$id, 
        
          );
@@ -493,7 +515,7 @@ class memberController extends Controller
 
        
         $name=Input::get('name');
-
+        $position=Input::get('position');
         $typee=Input::get('type');
         $email=Input::get('email'); 
      
@@ -501,7 +523,7 @@ class memberController extends Controller
         
         
   
-           $id=DB::table('users')->where('id', '=', $id)->update(array('name'=>$name,'email'=>$email,'type'=>$typee,'updated_at'=>$bdate));
+           $id=DB::table('users')->where('id', '=', $id)->update(array('name'=>$name,'email'=>$email,'position'=>$position,'type'=>$typee,'updated_at'=>$bdate));
            
            
     
@@ -641,5 +663,39 @@ class memberController extends Controller
         }
     }
      }
+    
+    
+     public function addpositions(Request $request){
+        
+         $rules = array(
+        'position'             => 'required|max:30',       // just a normal required validation
+         );
+    
+    $validator = Validator::make(Input::all(), $rules);
+    
+    
+       if ($validator->fails()) {
+
+        // get the error messages from the validator
+        $messages = $validator->messages();
+
+        // redirect our user back to the form with the errors from the validator
+        return Redirect::to('addUserPosition')
+            ->withErrors($validator)->withInput();
+
+    } else {
+        // validation successful ---------------------------
+
+       
+        $position=Input::get('position');
+        $bdate = date("Y-m-d");
+
+        DB::table('user_positions')->insert(array('position'=>$position,'created_at'=>$bdate,'updated_at'=>$bdate));
+
+        return Redirect::to('addUserPosition');
+
+    }
+        
+  }
     
 }

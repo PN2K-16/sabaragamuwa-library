@@ -27,6 +27,8 @@ class CreateMemberTable extends Migration
             $table->string('typee'); // whether it's a library or a student readers group member or a normal client
             
             
+            
+            
             $table->string('nic')->nullable(); // nullable because students dont have an nic, //also check whether this nic exisits in the system if entered
             $table->string('Ref_Num')->nullable(); //only created when library accepts registration fees or accepts the registration.
             
@@ -37,9 +39,11 @@ class CreateMemberTable extends Migration
              */
             
             
-            
+            $table->string('web_access')->default('no');
             $table->string('username')->nullable();
             $table->string('password')->nullable();
+            $table->rememberToken();
+            $table->timestamps();
             $table->string('status')->default('false');
             
             $table->date('date_registered');

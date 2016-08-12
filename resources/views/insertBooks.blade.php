@@ -64,9 +64,14 @@ Insert Books
        
        <div class="form-group">
       <label for="cat_num" class="col-lg-1 control-label">Category Number</label>
-      <div class="col-lg-10 @if ($errors->has('cat_num')) has-error @endif" >
-        <input class="form-control" id="cat_num" name="cat_num" placeholder="cat_num " type="text" value="{{ Input::old('cat_num') }}">
-           @if ($errors->has('cat_num')) <p class="help-block">{{ $errors->first('cat_num') }}</p> @endif
+      <div class="col-lg-10">
+       
+         <select class="form-control" id="cat_num" name="cat_num" >
+          @foreach($categories as $category)
+          <option value="{{$category->cat_name}}" >{{$category->cat_name}}</option>       
+          
+         @endforeach 
+          </select>
       </div>
     </div>
       

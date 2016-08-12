@@ -36,8 +36,11 @@
            <div class="col-md-2">
               <img src="{{URL::asset('/government-logo.png')}}" alt="logo" style="height: 100%;"/>
            </div>
-           <div class="col-md-8">
+           <div class="col-md-7">
               <h1 style="color:white">Welcome to Sabaragamuwa Public Library</h1>
+           </div>
+            <div class="col-md-2">
+              <img src="{{URL::asset('/logo.png')}}" alt="logo" style="height: 100%;"/>
            </div>
         </div>
         

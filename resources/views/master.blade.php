@@ -310,10 +310,12 @@
                  <!--   @yield('addmembers', '<li>')<a href="/addMembers"><span>Add Members</span></a></li>
                     @yield('searchmembers', '<li>')<a href="/searchMembers"><span>Search Members</span></a></li>-->
                     @yield('manageusers', '<li>') <li class="treeview">
-                        <a href="/manageUsers"><span>Manage Users</span> <i class="fa fa-angle-left pull-right"></i></a>
+                        <a href="/manageUsers"><span>Admin Panel</span> <i class="fa fa-angle-left pull-right"></i></a>
                         <ul class="treeview-menu">
                             <li><a href="/addUsers">Add Users</a></li>
-                            <li><a href="/editUsers">Edit Users</a></li> 
+                            <li><a href="/editUsers">Edit Users</a></li>
+                            <li><a href="/addBookCategory">Add Book Category</a></li> 
+                            <li><a href="/addUserPosition">Add User Position</a></li> 
                         </ul>
                     </li>
                     

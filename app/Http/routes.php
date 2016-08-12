@@ -14,7 +14,6 @@ Route::get('/', function () {
     return view('Login');
 });
 
-
 Route::get('/Login', function () {
     return view('Login');
 });
@@ -32,7 +31,10 @@ Route::get('error', function () {
 Route::get('test', 'TestController@index');
 
 Route::get('insertBooks', function () {
-    return view('insertBooks');
+    
+    $categories = DB::table('categories')->orderBy('id')->get();
+    
+    return view('insertBooks')->with("categories",$categories);
 });
 
 Route::get('searchBooks', function () {
@@ -78,7 +80,9 @@ Route::get('addUsers', function () {
      }
     else{
     
-    return view('addUsers');
+    $upositions = DB::table('user_positions')->orderBy('id')->get();   
+    
+    return view('addUsers')->with("upositions",$upositions);
     }
     });
 
@@ -96,6 +100,34 @@ Route::get('editUsers', function () {
     return view('editUsers');
     }
     });
+    
+Route::get('addBookCategory', function () {
+    
+     $user = Auth::user()->type;
+ 
+     if($user == "User")
+     {
+         return view('error');
+     }
+    else{
+    
+    return view('addBookCategory');
+    }
+    });
+    
+Route::get('addUserPosition', function () {
+    
+     $user = Auth::user()->type;
+ 
+     if($user == "User")
+     {
+         return view('error');
+     }
+    else{
+    
+    return view('addUserPosition');
+    }
+    });
 
 
 Route::any('addbooks', array('as' => 'addbooks', 'uses' => 'booksController@addbook'));
@@ -108,6 +140,7 @@ Route::get('deleteSingleBook', 'booksController@deleteSingleBooks');
 Route::get('singleCopy', 'booksController@singleCopys');
 Route::get('searchborrowedbooks', 'booksController@searchborrowedbook');
 Route::get('searchreservedbooks', 'booksController@searchreservedbook');    
+Route::any('addcategory', array('as' => 'addcategory', 'uses' => 'booksController@addcategorys'));
 
 
 Route::get('logout', 'memberController@logouts');
@@ -129,6 +162,7 @@ Route::get('singleUser', 'memberController@singleUsers');
 Route::post('editUser', 'memberController@editUsers');
 Route::post('editprofile', array('as' => 'editprofile', 'uses' => 'memberController@editprofiles'));
 Route::post('editpassword', 'memberController@editpasswords');
+Route::post('addposition', array('as' => 'addposition', 'uses' => 'memberController@addpositions'));
     });
 
 

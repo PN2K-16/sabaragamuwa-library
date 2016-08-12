@@ -18,8 +18,8 @@ class booksController extends Controller
             $rules = array(
        'name'             => 'required|max:100',                        // just a normal required validation
         'author'         => 'required|max:100',     // required and must be unique in the ducks table
-        'cl_number'             => 'required|numeric',
-        'cat_num'         => 'required|numeric', 
+        'cl_number'             => 'required',
+        'cat_num'         => 'required', 
         'edit_translate'         => 'required',
         'isbn' => 'required|numeric|unique:bookdetails',
          );
@@ -62,7 +62,7 @@ class booksController extends Controller
         
         
         
-$id=DB::table('bookdetails')->insertGetId(array('name'=>$name,'author'=>$author,'cl_number'=>$cl_num,'cat_num'=>$cat_number,'edit_translate'=>$edit,'pages'=>$pages,'height'=>$height,'series'=>$series,'series_num'=>$series_num,'isbn'=>$isbn,'remarks'=>$remarks,'published_place'=>$published_place,'publisher'=>$publisher,'published_year'=>$published_year,'date_created'=> $date, 'date_updated' => $date));
+$id=DB::table('bookdetails')->insertGetId(array('name'=>$name,'author'=>$author,'cl_number'=>$cl_num,'category'=>$cat_number,'edit_translate'=>$edit,'pages'=>$pages,'height'=>$height,'series'=>$series,'series_num'=>$series_num,'isbn'=>$isbn,'remarks'=>$remarks,'published_place'=>$published_place,'publisher'=>$publisher,'published_year'=>$published_year,'date_created'=> $date, 'date_updated' => $date));
            
 //DB::table('books')->insert(array('name'=>$name,'reserved'=>"no",'status'=>"yes",'remarks'=>$edit,'date_added'=>$pages,'date_updated'=>$height));
            
@@ -77,8 +77,9 @@ $id=DB::table('bookdetails')->insertGetId(array('name'=>$name,'author'=>$author,
         else{
         
         $imageName = $id . '.' .'jpg';
-        $request->file('image')->move(
-        base_path() . '/public/book_images', $imageName);   
+        $path = $request->file('image')->move(
+        base_path() . '/public/book_images', $imageName);
+            
            \Session::flash('message',$id);
         return Redirect::to('insertBooks')->withInput()->with('id',$id);
         }
@@ -135,7 +136,7 @@ $id=DB::table('bookdetails')->insertGetId(array('name'=>$name,'author'=>$author,
        'name'             => 'required|max:100',                        // just a normal required validation
         'author'         => 'required|max:100',     // required and must be unique in the ducks table
         'cl_number'             => 'required|numeric',
-        'cat_num'         => 'required|numeric', 
+        'category'         => 'required', 
         'edit_translate'         => 'required',
         'isbn' => 'required|numeric|unique:bookdetails,isbn,'.$idd,
          );
@@ -159,7 +160,7 @@ $id=DB::table('bookdetails')->insertGetId(array('name'=>$name,'author'=>$author,
         $author=$request->input('author');
         $cl_num=$request->input('cl_number');    
         $edit=$request->input('edit_translate');
-        $cat_number=$request->input('cat_num');
+        $cat_number=$request->input('category');
      
         $publisher=$request->input('publisher');  
         $published_place=$request->input('published_place');      
@@ -181,7 +182,7 @@ $id=DB::table('bookdetails')->insertGetId(array('name'=>$name,'author'=>$author,
         
 $book_name = DB::table('bookdetails')
         ->where('id', '=', $idd)
-        ->update(array('name' => $name, 'author' => $author, 'cl_number' => $cl_num, 'edit_translate' => $edit, 'publisher' => $publisher, 'published_place' => $published_place, 'published_year' => $published_year, 'pages' => $pages, 'height' => $height, 'series' => $series, 'series_num' => $series_num, 'isbn' => $isbn, 'remarks' => $remarks, 'date_updated' => $date));
+        ->update(array('name' => $name, 'author' => $author, 'cl_number' => $cl_num, 'category' => $cat_number , 'edit_translate' => $edit, 'publisher' => $publisher, 'published_place' => $published_place, 'published_year' => $published_year, 'pages' => $pages, 'height' => $height, 'series' => $series, 'series_num' => $series_num, 'isbn' => $isbn, 'remarks' => $remarks, 'date_updated' => $date));
            
 
         if($request->file('image')=="")
@@ -242,10 +243,11 @@ $book_name = DB::table('bookdetails')
     $book_name = DB::table('bookdetails')->where('id','=', $id)->first();
     $book = DB::table('books')->where('book_name_id','=', $id)->orderBy('id')->get();
     $members = DB::table('members')->get();
+    $categories = DB::table('categories')->orderBy('id')->get();
 
     return view('singleBook')
         ->with("book_name", $book_name)
-        ->with("book", $book)->with("members", $members);
+        ->with("book", $book)->with("members", $members)->with("categories",$categories);
     
     }
     
@@ -321,7 +323,41 @@ $book_name = DB::table('bookdetails')
         }
         
          
+     public function addcategorys(Request $request){
+        
+        
+           $rules = array(
+        'cat_num'             => 'required|digits_between:1,15',       // just a normal required validation
+        'cat_name'         => 'required|max:50',     // required and must be unique in the ducks table
+         );
     
+    $validator = Validator::make(Input::all(), $rules);
+    
+    
+       if ($validator->fails()) {
+
+        // get the error messages from the validator
+        $messages = $validator->messages();
+
+        // redirect our user back to the form with the errors from the validator
+        return Redirect::to('addBookCategory')
+            ->withErrors($validator)->withInput();
+
+    } else {
+        // validation successful ---------------------------
+
+       
+        $cat_num=Input::get('cat_num');
+        $cat_name=Input::get('cat_name');
+        $bdate = date("Y-m-d");
+
+        $id=DB::table('categories')->insert(array('cat_num'=>$cat_num,'cat_name'=>$cat_name,'created_at'=>$bdate,'updated_at'=>$bdate));
+
+        return Redirect::to('addBookCategory');
+
+    }
+        
+  }
             
             
     

@@ -16,6 +16,7 @@ class CreateUsersTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('email')->unique();
+            $table->string('position');
             $table->string('password', 128);
             $table->string('type');
             $table->string('banned_status')->default("No");

@@ -14,13 +14,13 @@ class CreateBookdetailsTable extends Migration
     {
         Schema::create('bookdetails', function (Blueprint $table) {
             $table->increments('id');
-			$table->float('cl_number');
-            $table->double('cat_num');
+			$table->integer('cl_number');
+            $table->string('category');
 			$table->string('author');
             $table->string('name');
             $table->string('edit_translate');
             $table->integer('pages');
-        //    $table->string('img_location');
+            $table->string('img_location');
             $table->float('height');
             
             $table->string('series');
@@ -28,7 +28,7 @@ class CreateBookdetailsTable extends Migration
             
             $table->string('isbn');
             $table->string('remarks');
-            
+            $table->integer('lend_count');
             
             $table->string('published_place');
             $table->string('publisher');

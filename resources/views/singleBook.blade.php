@@ -57,7 +57,11 @@ right: 26px;
             <h2> </h2> </legend>
 
         <div class="form-group">
-        <div class="col-lg-3"  style="background-image: url('../book_images/{{$book_name->id}}.jpg'),url('../book_images/img_placeholder.png');background-size: 100% 100%;width:300px;height:280px;border:1px solid;border-color:#D8D8D8;">
+        <div class="col-lg-3"  style="background-image:url('../book_images/{{$book_name->id}}.jpg'),url('../book_images/img_placeholder.png');background-size: 100% 100%;width:300px;height:280px;border:1px solid;border-color:#D8D8D8;">
+            <?php
+            //echo '<img src="data:image/jpg;base64,' . base64_encode($book_name->img_location) . '" />';
+?>
+          
 &ensp;
             </div>
 
@@ -79,14 +83,14 @@ right: 26px;
                     <h5 style="font-weight:600;font-size:110%"> {{$book_name->cl_number}}</h5>
 
                 </div>
-                <h5 for="name" class="col-lg-3 control-label" style="font-weight:300;font-size:110%">Cat Number </h5>
+                <h5 for="name" class="col-lg-3 control-label" style="font-weight:300;font-size:110%">Category</h5>
                  <div class="col-lg-1">
-                    <h5 style="font-weight:500;font-size:110%"> <?php if($book_name->cat_num=="" ||$book_name->cat_num==null){
+                    <h5 style="font-weight:500;font-size:110%"> <?php if($book_name->category=="" ||$book_name->category==null){
                             echo "None";
 
                         } 
 else {
-    echo $book_name->cat_num;
+    echo $book_name->category;
 
 }
                         ?></h5>
@@ -373,11 +377,17 @@ else {
     </div>
         
        
-       <div class="form-group">
-      <label for="cat_num" class="col-lg-1 control-label">Category Number</label>
-      <div class="col-lg-10 @if ($errors->has('cat_num')) has-error @endif" >
-        <input class="form-control" id="cat_num" name="cat_num" placeholder="cat_num " type="text" value="{{ Input::old('cat_num') }}">
-           @if ($errors->has('cat_num')) <p class="help-block">{{ $errors->first('cat_num') }}</p> @endif
+       
+      <div class="form-group">
+      <label for="category" class="col-lg-1 control-label">Category</label>
+      <div class="col-lg-10">
+       
+         <select class="form-control" id="category" name="category" >
+          @foreach($categories as $categorys)
+          <option value="{{$categorys->cat_name}}" >{{$categorys->cat_name}}</option>       
+          
+         @endforeach 
+          </select>
       </div>
     </div>
       
@@ -497,7 +507,7 @@ else {
         
         <div class="col-lg-2  " align="right" >
             <div id="booksave" >
-        <button type="submit" id="bksave" class="btn btn-success btn-block " style="padding-right:0cm">Updape</button>
+        <button type="submit" id="bksave" class="btn btn-success btn-block " style="padding-right:0cm">Update</button>
                 </div>
           </div>
           
@@ -635,13 +645,13 @@ else {
                 <div class=" form form-horizontal">
                <fieldset>
                       <div class="form-group">
-                         <label for="client_id" class="col-lg-3 control-label">Mobile Number</label>
+                         <label for="client_id" class="col-lg-3 control-label">Membership ID</label>
                          <div class="col-lg-5">
-                        <input class="form-control" list="numbers" id="client_id" name="client_id" placeholder="Mobile Number "  >
+                        <input class="form-control" list="numbers" id="client_id" name="client_id" placeholder="membership id"  >
                              <datalist id="numbers">
-                                 @foreach ($members as $b)
+                                 @foreach ($members as $mid)
 					
-                        <option value="{{$b->Mobile_Number }}"></option>
+                        <option value="{{$mid->id }}"></option>
                            @endforeach
 				</datalist>
                         </div>
@@ -899,7 +909,7 @@ var idd = document.getElementById("lol").value;
         $('#name').val('{{$book_name->name}}');
         $('#author').val('{{$book_name->author}}');
         $('#cl_number').val('{{$book_name->cl_number}}');
-        $('#cat_num').val('{{$book_name->cat_num}}');
+        $('#category').val('{{$book_name->category}}');
         $('#edit_translate').val('{{$book_name->edit_translate}}');
 
 

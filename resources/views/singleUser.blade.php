@@ -65,6 +65,22 @@ kushal
       
       <br>
       
+      <div class="form-group">
+      <label for="position" class="col-lg-2 control-label">Position</label>
+      <div class="col-lg-5">
+       
+         <select class="form-control" id="position" name="position" >
+          @foreach($upositions as $positions)
+          
+          <option value="{{$positions->position}}" >{{$positions->position}}</option>       
+          
+         @endforeach 
+          </select>
+      </div>
+    </div>
+      
+      <br>
+      
            <div class="form-group">
           
           
